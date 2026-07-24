@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Clinical workspace | Fingerprint Diagnostics</title>
+
+<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="pack2.css">
+<link rel="stylesheet" href="pack3.css">
+<link rel="stylesheet" href="pack4.css">
+<link rel="stylesheet" href="pack5.css">
+
+</head>
+<body class="pack2-dashboard">
+<aside class="pack2-sidebar">
+  <a class="brand" href="index.html"><span class="brand-mark">FD</span><span>Fingerprint<br>Diagnostics</span></a>
+  <nav class="pack2-side-nav">
+    <a href="dashboard.html">Overview</a>
+    <a href="patient-portal.html">Patient portal</a>
+    <a class="active" href="clinician-portal.html">Clinician portal</a>
+    <a href="fingerprint-engine.html">Fingerprint engine</a>
+    <a href="disease-library.html">Disease library</a>
+    <a href="biomarker-library.html">Biomarkers</a>
+    <a href="profile.html">Profile</a>
+    <a href="settings.html">Settings</a>
+    <a href="notifications.html">Notifications</a>
+    <a href="index.html">Website</a>
+  </nav>
+  <button class="pack2-logout" data-logout>Sign out</button>
+</aside>
+<main class="pack2-main">
+
+<header class="pack2-header">
+  <div><span class="eyebrow">Clinical workspace</span><h1 id="case-name">Patient case.</h1><p id="case-subtitle"></p></div>
+  <div class="pack3-actions"><a class="button secondary" href="clinician-portal.html">Back to queue</a><a class="button primary" href="report-builder.html">Build report</a></div>
+</header>
+<section class="pack4-action-grid">
+  <a class="pack4-action-card" href="patient-portal.html"><strong>Patient record</strong><span>History, symptoms and results</span></a>
+  <a class="pack4-action-card" href="fingerprint-engine.html"><strong>Fingerprint analysis</strong><span>Explore model contributions</span></a>
+  <a class="pack4-action-card" href="report-builder.html"><strong>Report builder</strong><span>Create an explainable summary</span></a>
+</section>
+<section class="pack4-workspace" style="margin-top:24px">
+  <article class="pack4-panel">
+    <div class="pack4-patient-head"><div><span class="eyebrow">Case overview</span><h2 id="overview-name"></h2><p id="overview-condition"></p></div><span id="overview-priority" class="pack4-priority"></span></div>
+    <div class="pack3-details" id="case-details"></div>
+  </article>
+  <article class="pack4-panel">
+    <span class="eyebrow">Clinical notes</span><h2>Case notes</h2>
+    <div id="notes-list"></div>
+    <form id="note-form" class="pack4-form" style="margin-top:22px">
+      <input id="note-title" placeholder="Note title" required>
+      <textarea id="note-body" rows="5" placeholder="Add a clinical note" required></textarea>
+      <button class="button primary">Save note</button>
+    </form>
+  </article>
+</section>
+
+</main>
+<script src="script.js"></script>
+<script src="pack2.js"></script>
+<script src="pack3.js"></script>
+<script src="pack4.js"></script>
+<script src="pack5.js"></script>
+<script>
+fdRequireUser();
+
+const id=new URLSearchParams(location.search).get("id")||"FD-1001";
+const patient=fd4Read(FD4_PATIENTS_KEY,[]).find(p=>p.id===id)||fd4Read(FD4_PATIENTS_KEY,[])[0];
+document.getElementById("case-name").textContent=patient.name;
+document.getElementById("case-subtitle").textContent=patient.id+" · "+patient.condition;
+document.getElementById("overview-name").textContent=patient.name;
+document.getElementById("overview-condition").textContent=patient.condition;
+const pri=document.getElementById("overview-priority");pri.textContent=patient.priority;pri.classList.add(patient.priority.toLowerCase());
+document.getElementById("case-details").innerHTML=[
+  ["Patient ID",patient.id],["Age",patient.age],["Status",patient.status],["Fingerprint match",patient.match+"%"],["Last activity",fd4Date(patient.lastActivity)]
+].map(x=>'<div class="pack3-row"><span>'+x[0]+'</span><strong>'+x[1]+'</strong></div>').join("");
+function renderNotes(){
+  const notes=fd4Read(FD4_NOTES_KEY,[]).filter(n=>n.patientId===patient.id);
+  document.getElementById("notes-list").innerHTML=notes.length?notes.map(n=>'<article class="pack4-note"><div class="pack4-note-meta"><span>'+n.author+'</span><span>'+fd4Date(n.date)+'</span></div><h3>'+n.title+'</h3><p>'+n.body+'</p></article>').join(""):'<p>No notes yet.</p>';
+}
+document.getElementById("note-form").onsubmit=e=>{
+  e.preventDefault();
+  const notes=fd4Read(FD4_NOTES_KEY,[]);
+  notes.unshift({id:Date.now(),patientId:patient.id,date:new Date().toISOString().slice(0,10),author:fdGetUser()?.name||"Clinician",title:document.getElementById("note-title").value,body:document.getElementById("note-body").value});
+  fd4Write(FD4_NOTES_KEY,notes);e.target.reset();renderNotes();
+};
+renderNotes();
+
+</script>
+</body>
+</html>

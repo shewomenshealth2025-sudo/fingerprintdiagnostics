@@ -1,0 +1,41 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Patient portal | Fingerprint Diagnostics</title><link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="pack2.css">
+<link rel="stylesheet" href="pack3.css"><link rel="stylesheet" href="pack4.css">
+<link rel="stylesheet" href="pack5.css">
+</head><body class="pack2-dashboard"><aside class="pack2-sidebar">
+  <a class="brand" href="index.html"><span class="brand-mark">FD</span><span>Fingerprint<br>Diagnostics</span></a>
+  <nav class="pack2-side-nav">
+    <a href="dashboard.html">Overview</a>
+    <a href="patient-portal.html">Patient portal</a>
+    <a href="clinician-portal.html">Clinician portal</a>
+    <a href="fingerprint-engine.html">Fingerprint engine</a>
+    <a href="disease-library.html">Disease library</a>
+    <a href="biomarker-library.html">Biomarkers</a>
+    <a href="profile.html">Profile</a>
+    <a href="settings.html">Settings</a>
+    <a href="notifications.html">Notifications</a>
+    <a href="index.html">Website</a>
+  </nav>
+  <button class="pack2-logout" data-logout>Sign out</button>
+</aside><main class="pack2-main">
+<header class="pack2-header"><div><span class="eyebrow">Patient portal</span><h1>Patient overview.</h1><p>Demonstration patient information for the MVP.</p></div><a class="button secondary" href="patient-report.html">Open report</a></header>
+<section class="pack3-banner"><div><span class="eyebrow light">Active patient</span><h2 id="p-name">Patient</h2><p><span id="p-condition"></span> · <span id="p-gp"></span></p></div><div class="pack3-avatar" id="p-initials">AC</div></section>
+<section class="pack2-metrics"><article class="pack2-metric"><span>Active symptoms</span><strong id="symptom-count">0</strong><small>Currently tracked</small></article><article class="pack2-metric"><span>Test results</span><strong id="result-count">0</strong><small>Prototype record</small></article><article class="pack2-metric"><span>Elevated markers</span><strong id="high-count">0</strong><small>Outside range</small></article><article class="pack2-metric"><span>Fingerprint match</span><strong>78%</strong><small>Illustrative only</small></article></section>
+<section class="pack3-grid"><article class="pack2-panel"><span class="eyebrow">Patient details</span><h2>Clinical profile</h2><div id="details" class="pack3-details"></div></article><article class="pack2-panel"><span class="eyebrow">Current record</span><h2>Key information</h2><h3>Conditions</h3><div id="conditions" class="pack3-tags"></div><h3 style="margin-top:26px">Medications</h3><div id="medications" class="pack3-tags"></div><h3 style="margin-top:26px">Allergies</h3><div id="allergies" class="pack3-tags"></div></article></section>
+<section class="pack2-warning"><strong>Demonstration data only</strong><p>This fictional patient record is stored only in the current browser.</p></section>
+</main><script src="script.js"></script><script src="pack2.js"></script><script src="pack3.js"></script><script>fdRequireUser();
+const p=fd3Read(FD3_PATIENT,{}),s=fd3Read(FD3_SYMPTOMS,[]),r=fd3Read(FD3_RESULTS,[]);
+document.getElementById("p-name").textContent=p.fullName;
+document.getElementById("p-condition").textContent=p.conditions[0];
+document.getElementById("p-gp").textContent=p.gpPractice;
+document.getElementById("p-initials").textContent=p.fullName.split(" ").map(x=>x[0]).join("").slice(0,2);
+document.getElementById("symptom-count").textContent=s.length;
+document.getElementById("result-count").textContent=r.length;
+document.getElementById("high-count").textContent=r.filter(x=>x.status==="High").length;
+const rows=[["Date of birth",fd3Date(p.dateOfBirth)],["Sex",p.sex],["NHS number",p.nhsNumber],["Email",p.email],["Phone",p.phone],["GP practice",p.gpPractice]];
+document.getElementById("details").innerHTML=rows.map(x=>'<div class="pack3-row"><span>'+x[0]+'</span><strong>'+x[1]+'</strong></div>').join("");
+function tags(id,items){document.getElementById(id).innerHTML=items.map(x=>'<span class="pack3-tag">'+x+'</span>').join("");}
+tags("conditions",p.conditions);tags("medications",p.medications);tags("allergies",p.allergies);
+</script><script src="pack4.js"></script>
+<script src="pack5.js"></script>
+</body></html>

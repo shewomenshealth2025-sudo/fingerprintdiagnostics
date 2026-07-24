@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Report builder | Fingerprint Diagnostics</title>
+
+<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="pack2.css">
+<link rel="stylesheet" href="pack3.css">
+<link rel="stylesheet" href="pack4.css">
+<link rel="stylesheet" href="pack5.css">
+
+</head>
+<body class="pack2-dashboard">
+<aside class="pack2-sidebar">
+  <a class="brand" href="index.html"><span class="brand-mark">FD</span><span>Fingerprint<br>Diagnostics</span></a>
+  <nav class="pack2-side-nav">
+    <a href="dashboard.html">Overview</a>
+    <a href="patient-portal.html">Patient portal</a>
+    <a class="active" href="clinician-portal.html">Clinician portal</a>
+    <a href="fingerprint-engine.html">Fingerprint engine</a>
+    <a href="disease-library.html">Disease library</a>
+    <a href="biomarker-library.html">Biomarkers</a>
+    <a href="profile.html">Profile</a>
+    <a href="settings.html">Settings</a>
+    <a href="notifications.html">Notifications</a>
+    <a href="index.html">Website</a>
+  </nav>
+  <button class="pack2-logout" data-logout>Sign out</button>
+</aside>
+<main class="pack2-main">
+
+<header class="pack2-header">
+  <div><span class="eyebrow">Clinician tools</span><h1>Report builder.</h1><p>Create a structured, explainable prototype report.</p></div>
+  <button class="button secondary" onclick="window.print()">Print preview</button>
+</header>
+<section class="pack4-builder">
+  <article class="pack4-builder-section"><label><strong>Clinical question</strong><textarea id="question">Does this patient's multi-signal profile warrant further assessment for endometriosis?</textarea></label></article>
+  <article class="pack4-builder-section"><label><strong>Pattern summary</strong><textarea id="summary">The profile shows a moderate-to-high similarity with the illustrative endometriosis fingerprint, led by symptom, inflammatory and microbiome-related signals.</textarea></label></article>
+  <article class="pack4-builder-section"><label><strong>Key evidence</strong><textarea id="evidence">Severe cyclical pelvic pain; painful periods; persistent fatigue; mild elevation in CA-125 and CRP; ultrasound findings do not exclude disease.</textarea></label></article>
+  <article class="pack4-builder-section"><label><strong>Suggested next discussion</strong><textarea id="next">Review symptom burden, referral status and guideline-based investigation with appropriate clinical oversight.</textarea></label></article>
+  <article class="pack4-builder-section"><label><strong>Limitations</strong><textarea id="limitations">This prototype output is not a diagnosis and must not replace qualified clinical assessment.</textarea></label></article>
+  <div><button id="save-report" class="button primary">Save draft</button><span id="saved-message" style="margin-left:14px" hidden>Draft saved in this browser.</span></div>
+</section>
+
+</main>
+<script src="script.js"></script>
+<script src="pack2.js"></script>
+<script src="pack3.js"></script>
+<script src="pack4.js"></script>
+<script src="pack5.js"></script>
+<script>
+fdRequireUser();
+
+document.getElementById("save-report").onclick=()=>{
+  localStorage.setItem("fd_demo_report_draft",JSON.stringify({
+    question:document.getElementById("question").value,
+    summary:document.getElementById("summary").value,
+    evidence:document.getElementById("evidence").value,
+    next:document.getElementById("next").value,
+    limitations:document.getElementById("limitations").value
+  }));
+  document.getElementById("saved-message").hidden=false;
+};
+
+</script>
+</body>
+</html>

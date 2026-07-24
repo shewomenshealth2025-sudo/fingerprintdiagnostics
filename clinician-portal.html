@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Clinician portal | Fingerprint Diagnostics</title>
+
+<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="pack2.css">
+<link rel="stylesheet" href="pack3.css">
+<link rel="stylesheet" href="pack4.css">
+<link rel="stylesheet" href="pack5.css">
+
+</head>
+<body class="pack2-dashboard">
+<aside class="pack2-sidebar">
+  <a class="brand" href="index.html"><span class="brand-mark">FD</span><span>Fingerprint<br>Diagnostics</span></a>
+  <nav class="pack2-side-nav">
+    <a href="dashboard.html">Overview</a>
+    <a href="patient-portal.html">Patient portal</a>
+    <a class="active" href="clinician-portal.html">Clinician portal</a>
+    <a href="fingerprint-engine.html">Fingerprint engine</a>
+    <a href="disease-library.html">Disease library</a>
+    <a href="biomarker-library.html">Biomarkers</a>
+    <a href="profile.html">Profile</a>
+    <a href="settings.html">Settings</a>
+    <a href="notifications.html">Notifications</a>
+    <a href="index.html">Website</a>
+  </nav>
+  <button class="pack2-logout" data-logout>Sign out</button>
+</aside>
+<main class="pack2-main">
+
+<header class="pack2-header">
+  <div><span class="eyebrow">Pack 4</span><h1>Clinician portal.</h1><p>Review patients, prioritise cases and open the diagnostic workspace.</p></div>
+  <a class="button primary" href="clinical-workspace.html?id=FD-1001">Open active case</a>
+</header>
+<section class="pack2-metrics">
+  <article class="pack2-metric"><span>Active patients</span><strong>4</strong><small>Demonstration records</small></article>
+  <article class="pack2-metric"><span>High priority</span><strong>1</strong><small>Requires review</small></article>
+  <article class="pack2-metric"><span>Awaiting results</span><strong>1</strong><small>Pending clinical data</small></article>
+  <article class="pack2-metric"><span>Reports drafted</span><strong>2</strong><small>Prototype summaries</small></article>
+</section>
+<section class="pack2-panel">
+  <div class="pack4-toolbar">
+    <div><span class="eyebrow">Patient list</span><h2>Clinical queue</h2></div>
+    <input id="patient-search" class="pack4-search" type="search" placeholder="Search by name, ID or condition">
+  </div>
+  <div class="pack4-table-wrap">
+    <table class="pack4-table">
+      <thead><tr><th>Patient</th><th>ID</th><th>Condition</th><th>Status</th><th>Match</th><th>Priority</th><th>Last activity</th></tr></thead>
+      <tbody id="patient-table"></tbody>
+    </table>
+  </div>
+</section>
+
+</main>
+<script src="script.js"></script>
+<script src="pack2.js"></script>
+<script src="pack3.js"></script>
+<script src="pack4.js"></script>
+<script src="pack5.js"></script>
+<script>
+fdRequireUser();
+
+const patients=fd4Read(FD4_PATIENTS_KEY,[]);
+function renderPatients(query=""){
+  const q=query.toLowerCase();
+  const filtered=patients.filter(p=>[p.name,p.id,p.condition,p.status].join(" ").toLowerCase().includes(q));
+  document.getElementById("patient-table").innerHTML=filtered.map(p=>`
+    <tr data-link="clinical-workspace.html?id=${p.id}">
+      <td><strong>${p.name}</strong><br><small>Age ${p.age}</small></td>
+      <td><span class="pack4-patient-id">${p.id}</span></td>
+      <td>${p.condition}</td>
+      <td>${p.status}</td>
+      <td><strong>${p.match}%</strong></td>
+      <td><span class="pack4-priority ${p.priority.toLowerCase()}">${p.priority}</span></td>
+      <td>${fd4Date(p.lastActivity)}</td>
+    </tr>`).join("");
+  document.querySelectorAll("tr[data-link]").forEach(row=>row.onclick=()=>location.href=row.dataset.link);
+}
+document.getElementById("patient-search").addEventListener("input",e=>renderPatients(e.target.value));
+renderPatients();
+
+</script>
+</body>
+</html>

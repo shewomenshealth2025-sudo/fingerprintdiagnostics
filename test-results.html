@@ -1,0 +1,28 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Test results | Fingerprint Diagnostics</title><link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="pack2.css">
+<link rel="stylesheet" href="pack3.css"><link rel="stylesheet" href="pack4.css">
+<link rel="stylesheet" href="pack5.css">
+</head><body class="pack2-dashboard"><aside class="pack2-sidebar">
+  <a class="brand" href="index.html"><span class="brand-mark">FD</span><span>Fingerprint<br>Diagnostics</span></a>
+  <nav class="pack2-side-nav">
+    <a href="dashboard.html">Overview</a>
+    <a href="patient-portal.html">Patient portal</a>
+    <a href="clinician-portal.html">Clinician portal</a>
+    <a href="fingerprint-engine.html">Fingerprint engine</a>
+    <a href="disease-library.html">Disease library</a>
+    <a href="biomarker-library.html">Biomarkers</a>
+    <a href="profile.html">Profile</a>
+    <a href="settings.html">Settings</a>
+    <a href="notifications.html">Notifications</a>
+    <a href="index.html">Website</a>
+  </nav>
+  <button class="pack2-logout" data-logout>Sign out</button>
+</aside><main class="pack2-main">
+<header class="pack2-header"><div><span class="eyebrow">Clinical data</span><h1>Test results.</h1><p>Structured demonstration results contributing to the fingerprint.</p></div></header>
+<section class="pack2-panel"><div class="pack3-table-wrap"><table class="pack3-table"><thead><tr><th>Test</th><th>Result</th><th>Reference range</th><th>Date</th><th>Status</th></tr></thead><tbody id="results"></tbody></table></div></section>
+<section class="pack2-warning"><strong>Reference ranges vary</strong><p>These values are illustrative and require clinical context.</p></section>
+</main><script src="script.js"></script><script src="pack2.js"></script><script src="pack3.js"></script><script>fdRequireUser();
+document.getElementById("results").innerHTML=fd3Read(FD3_RESULTS,[]).map(x=>'<tr><td><strong>'+x.test+'</strong></td><td>'+x.value+'</td><td>'+x.range+'</td><td>'+fd3Date(x.date)+'</td><td><span class="pack3-status '+x.status.toLowerCase()+'">'+x.status+'</span></td></tr>').join("");
+</script><script src="pack4.js"></script>
+<script src="pack5.js"></script>
+</body></html>

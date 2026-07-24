@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Notifications | Fingerprint Diagnostics</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="pack2.css" />
+<link rel="stylesheet" href="pack4.css">
+<link rel="stylesheet" href="pack5.css">
+</head>
+<body class="pack2-dashboard">
+  <aside class="pack2-sidebar">
+  <a class="brand" href="index.html"><span class="brand-mark">FD</span><span>Fingerprint<br>Diagnostics</span></a>
+  <nav class="pack2-side-nav">
+    <a href="dashboard.html">Overview</a>
+    <a href="patient-portal.html">Patient portal</a>
+    <a href="clinician-portal.html">Clinician portal</a>
+    <a href="fingerprint-engine.html">Fingerprint engine</a>
+    <a href="disease-library.html">Disease library</a>
+    <a href="biomarker-library.html">Biomarkers</a>
+    <a href="profile.html">Profile</a>
+    <a href="settings.html">Settings</a>
+    <a href="notifications.html">Notifications</a>
+    <a href="index.html">Website</a>
+  </nav>
+  <button class="pack2-logout" data-logout>Sign out</button>
+</aside>
+
+  <main class="pack2-main">
+    <header class="pack2-header">
+      <div><span class="eyebrow">Updates</span><h1>Notifications.</h1><p>Account and research prototype activity.</p></div>
+      <button id="mark-all" class="button secondary">Mark all as read</button>
+    </header>
+
+    <section class="pack2-panel">
+      <div id="notification-list"></div>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+  <script src="pack2.js"></script>
+  <script>
+    fdRequireUser();
+
+    function renderNotifications() {
+      const items = fdGetNotifications();
+      const container = document.getElementById("notification-list");
+
+      container.innerHTML = items.map((item) => `
+        <article class="pack2-notification ${item.read ? "" : "unread"}">
+          <span class="pack2-notification-dot"></span>
+          <div>
+            <strong>${item.title}</strong>
+            <p>${item.body}</p>
+          </div>
+          <time>${item.date}</time>
+        </article>
+      `).join("");
+
+      fdUpdateUserUI();
+    }
+
+    document.getElementById("mark-all").addEventListener("click", () => {
+      fdSaveNotifications(fdGetNotifications().map((item) => ({ ...item, read: true })));
+      renderNotifications();
+    });
+
+    renderNotifications();
+  </script>
+<script src="pack4.js"></script>
+<script src="pack5.js"></script>
+</body>
+</html>

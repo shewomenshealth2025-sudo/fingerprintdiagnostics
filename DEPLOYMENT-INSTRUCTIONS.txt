@@ -1,0 +1,23 @@
+FINGERPRINT DIAGNOSTICS — COMPLETE PACKS 1 TO 5
+
+This is one complete, fully integrated static site.
+
+Included:
+PACK 1 — Public website
+PACK 2 — Accounts and dashboard
+PACK 3 — Patient portal
+PACK 4 — Clinician portal
+PACK 5 — Fingerprint engine
+
+DEPLOYMENT
+1. Delete the existing repository contents or create a clean repository.
+2. Extract this ZIP on your computer.
+3. Upload every extracted file directly into the repository root.
+4. Do not upload the ZIP itself.
+5. Confirm that index.html, styles.css, pack2.css, pack3.css, pack4.css and pack5.css are all in the root.
+6. Commit the upload.
+7. Wait 1–2 minutes and hard-refresh with Ctrl + Shift + R.
+
+PROTOTYPE SAFETY
+All people, records, scores and clinical data are fictional demonstration content.
+Do not use real patient data or make clinical decisions from this prototype.

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sign in | Fingerprint Diagnostics</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="pack2.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="container nav-wrap">
+      <a class="brand" href="index.html"><span class="brand-mark">FD</span><span>Fingerprint Diagnostics</span></a>
+      <button class="menu-toggle" aria-label="Open menu">☰</button>
+      <nav class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+        <a class="nav-button active" href="login.html">Sign in</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="auth-main">
+    <section class="form-card auth-card">
+      <span class="eyebrow">Prototype access</span>
+      <h1>Sign in</h1>
+      <p>This is the front-end login screen. Real authentication can be added in Pack 2.</p>
+      <form id="login-form">
+        <label>Email address<input id="email" type="email" placeholder="you@example.com" /></label>
+        <label>Password<input id="password" type="password" placeholder="••••••••" /></label>
+        <button class="button primary full" type="button">Continue</button>
+      </form>
+        <p style="margin-top:18px"><a class="pack2-link" href="forgot-password.html">Forgot password?</a></p>
+        <p>New to the platform? <a class="pack2-link" href="register.html">Create an account</a></p>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container footer-wrap">
+      <div><strong>Fingerprint Diagnostics</strong><p>Reading disease through patterns, not isolated signals.</p></div>
+      <span>© 2026 Fingerprint Diagnostics</span>
+    </div>
+  </footer>
+  <script src="script.js"></script>
+
+  <script src="pack2.js"></script>
+  <script>
+    document.getElementById("login-form").addEventListener("submit", function (event) {
+      event.preventDefault();
+
+      const email = document.getElementById("email").value.trim();
+      const password = document.getElementById("password").value;
+
+      if (!email || password.length < 6) return;
+
+      const namePart = email.split("@")[0].replace(/[._-]/g, " ");
+      const name = namePart.replace(/\b\w/g, function (character) {
+        return character.toUpperCase();
+      });
+
+      fdSaveUser({
+        name: name || "Prototype User",
+        email: email,
+        role: "Research user",
+        organisation: "Independent"
+      });
+
+      window.location.href = "dashboard.html";
+    });
+  </script>
+
+</body>
+</html>

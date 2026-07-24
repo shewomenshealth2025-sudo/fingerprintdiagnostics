@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Biomarker library | Fingerprint Diagnostics</title>
+
+<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="pack2.css">
+<link rel="stylesheet" href="pack3.css">
+<link rel="stylesheet" href="pack4.css">
+<link rel="stylesheet" href="pack5.css">
+
+</head>
+<body class="pack2-dashboard">
+<aside class="pack2-sidebar">
+  <a class="brand" href="index.html"><span class="brand-mark">FD</span><span>Fingerprint<br>Diagnostics</span></a>
+  <nav class="pack2-side-nav">
+    <a href="dashboard.html">Overview</a>
+    <a href="patient-portal.html">Patient portal</a>
+    <a href="clinician-portal.html">Clinician portal</a>
+    <a href="fingerprint-engine.html">Fingerprint engine</a>
+    <a href="disease-library.html">Disease library</a>
+    <a class="active" href="biomarker-library.html">Biomarkers</a>
+    <a href="profile.html">Profile</a>
+    <a href="settings.html">Settings</a>
+    <a href="notifications.html">Notifications</a>
+    <a href="index.html">Website</a>
+  </nav>
+  <button class="pack2-logout" data-logout>Sign out</button>
+</aside>
+<main class="pack2-main">
+
+<header class="pack2-header">
+  <div><span class="eyebrow">Evidence library</span><h1>Biomarker explorer.</h1><p>Browse the biological signals that can form individual fingerprint ridges.</p></div>
+</header>
+<section class="pack5-panel">
+  <input id="biomarker-search" class="pack5-library-search" type="search" placeholder="Search biomarker, category or condition">
+  <div style="overflow-x:auto"><table class="pack5-biomarker-table"><thead><tr><th>Biomarker</th><th>Category</th><th>Associated context</th><th>Evidence role</th></tr></thead><tbody id="biomarker-table"></tbody></table></div>
+</section>
+
+</main>
+<script src="script.js"></script>
+<script src="pack2.js"></script>
+<script src="pack3.js"></script>
+<script src="pack4.js"></script>
+<script src="pack5.js"></script>
+<script>
+fdRequireUser();
+
+const biomarkers=[["CA-125", "Protein biomarker", "Endometriosis / ovarian disease", "Supportive, non-specific"], ["CRP", "Inflammation", "Systemic inflammation", "Contextual"], ["IL-6", "Cytokine", "Inflammatory signalling", "Research"], ["Estradiol", "Hormone", "Reproductive endocrine pattern", "Context-dependent"], ["AMH", "Hormone", "Ovarian reserve / PCOS context", "Clinical"], ["Beta-glucuronidase", "Microbiome function", "Oestrogen recycling pathways", "Research"], ["SHBG", "Hormone-binding protein", "PCOS / metabolic context", "Clinical"], ["Ferritin", "Iron status", "Fatigue / menstrual blood loss", "Clinical"]];
+function renderBiomarkers(q=""){
+  q=q.toLowerCase();
+  document.getElementById("biomarker-table").innerHTML=biomarkers.filter(x=>x.join(" ").toLowerCase().includes(q)).map(x=>'<tr><td><strong>'+x[0]+'</strong></td><td>'+x[1]+'</td><td>'+x[2]+'</td><td>'+x[3]+'</td></tr>').join("");
+}
+document.getElementById("biomarker-search").oninput=e=>renderBiomarkers(e.target.value);
+renderBiomarkers();
+
+</script>
+</body>
+</html>

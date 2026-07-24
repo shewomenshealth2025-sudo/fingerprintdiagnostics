@@ -1,0 +1,30 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Symptoms | Fingerprint Diagnostics</title><link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="pack2.css">
+<link rel="stylesheet" href="pack3.css"><link rel="stylesheet" href="pack4.css">
+<link rel="stylesheet" href="pack5.css">
+</head><body class="pack2-dashboard"><aside class="pack2-sidebar">
+  <a class="brand" href="index.html"><span class="brand-mark">FD</span><span>Fingerprint<br>Diagnostics</span></a>
+  <nav class="pack2-side-nav">
+    <a href="dashboard.html">Overview</a>
+    <a href="patient-portal.html">Patient portal</a>
+    <a href="clinician-portal.html">Clinician portal</a>
+    <a href="fingerprint-engine.html">Fingerprint engine</a>
+    <a href="disease-library.html">Disease library</a>
+    <a href="biomarker-library.html">Biomarkers</a>
+    <a href="profile.html">Profile</a>
+    <a href="settings.html">Settings</a>
+    <a href="notifications.html">Notifications</a>
+    <a href="index.html">Website</a>
+  </nav>
+  <button class="pack2-logout" data-logout>Sign out</button>
+</aside><main class="pack2-main">
+<header class="pack2-header"><div><span class="eyebrow">Patient record</span><h1>Symptoms.</h1><p>Track severity, frequency and progression.</p></div><button id="open-modal" class="button primary">Add symptom</button></header>
+<section id="symptom-list" class="pack3-cards"></section>
+<div id="modal" class="pack3-modal-bg"><section class="pack3-modal"><div class="pack3-modal-head"><div><span class="eyebrow">New entry</span><h2>Add symptom</h2></div><button id="close-modal" class="pack3-close">×</button></div><form id="symptom-form" class="pack2-form"><label>Symptom name<input id="name" required></label><div class="pack2-grid-2"><label>Severity (1–10)<input id="severity" type="number" min="1" max="10" required></label><label>Frequency<select id="frequency" required><option value="">Select</option><option>Daily</option><option>Most days</option><option>Several days a week</option><option>Weekly</option><option>Every cycle</option></select></label></div><label>Onset<input id="onset" type="date" required></label><label>Notes<textarea id="notes" rows="4"></textarea></label><button class="button primary full">Save symptom</button></form></section></div>
+</main><script src="script.js"></script><script src="pack2.js"></script><script src="pack3.js"></script><script>fdRequireUser();
+function render(){const data=fd3Read(FD3_SYMPTOMS,[]);document.getElementById("symptom-list").innerHTML=data.map(x=>'<article class="pack3-card"><div class="pack3-card-top"><div><h3>'+x.name+'</h3><p>'+(x.notes||"No notes")+'</p></div><div class="pack3-severity">'+x.severity+'</div></div><div class="pack3-meta"><span><strong>Frequency:</strong> '+x.frequency+'</span><span><strong>Onset:</strong> '+fd3Date(x.onset)+'</span></div></article>').join("");}
+const m=document.getElementById("modal");document.getElementById("open-modal").onclick=()=>m.classList.add("open");document.getElementById("close-modal").onclick=()=>m.classList.remove("open");
+document.getElementById("symptom-form").onsubmit=e=>{e.preventDefault();const d=fd3Read(FD3_SYMPTOMS,[]);d.unshift({id:Date.now(),name:document.getElementById("name").value,severity:Number(document.getElementById("severity").value),frequency:document.getElementById("frequency").value,onset:document.getElementById("onset").value,notes:document.getElementById("notes").value});fd3Write(FD3_SYMPTOMS,d);e.target.reset();m.classList.remove("open");render();};render();
+</script><script src="pack4.js"></script>
+<script src="pack5.js"></script>
+</body></html>

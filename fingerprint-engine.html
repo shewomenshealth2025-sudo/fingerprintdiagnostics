@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Fingerprint engine | Fingerprint Diagnostics</title>
+
+<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="pack2.css">
+<link rel="stylesheet" href="pack3.css">
+<link rel="stylesheet" href="pack4.css">
+<link rel="stylesheet" href="pack5.css">
+
+</head>
+<body class="pack2-dashboard">
+<aside class="pack2-sidebar">
+  <a class="brand" href="index.html"><span class="brand-mark">FD</span><span>Fingerprint<br>Diagnostics</span></a>
+  <nav class="pack2-side-nav">
+    <a href="dashboard.html">Overview</a>
+    <a href="patient-portal.html">Patient portal</a>
+    <a href="clinician-portal.html">Clinician portal</a>
+    <a class="active" href="fingerprint-engine.html">Fingerprint engine</a>
+    <a href="disease-library.html">Disease library</a>
+    <a href="biomarker-library.html">Biomarkers</a>
+    <a href="profile.html">Profile</a>
+    <a href="settings.html">Settings</a>
+    <a href="notifications.html">Notifications</a>
+    <a href="index.html">Website</a>
+  </nav>
+  <button class="pack2-logout" data-logout>Sign out</button>
+</aside>
+<main class="pack2-main">
+
+<header class="pack2-header">
+  <div><span class="eyebrow">Pack 5</span><h1>Fingerprint engine.</h1><p>Explore how multiple biological ridges combine into one explainable disease pattern.</p></div>
+  <a class="button secondary" href="disease-library.html">Browse models</a>
+</header>
+<section id="model-grid" class="pack5-model-grid"></section>
+<section class="pack5-engine-grid" style="margin-top:24px">
+  <article class="pack5-panel">
+    <span class="eyebrow">Active model</span><h2 id="model-name"></h2><p id="model-description"></p>
+    <div id="ridge-list"></div>
+  </article>
+  <article class="pack5-panel pack5-score-card">
+    <div>
+      <span class="eyebrow">Composite match</span>
+      <div id="score-ring" class="pack5-score-ring">0%</div>
+      <h3 id="score-label"></h3>
+      <p>Illustrative weighted similarity score.</p>
+    </div>
+  </article>
+</section>
+<section class="pack5-explain" style="margin-top:24px"><strong>How the engine works</strong><p>Each ridge represents one class of biological or clinical evidence. Ridge scores are weighted and combined to create an explainable pattern rather than relying on one isolated marker.</p></section>
+
+</main>
+<script src="script.js"></script>
+<script src="pack2.js"></script>
+<script src="pack3.js"></script>
+<script src="pack4.js"></script>
+<script src="pack5.js"></script>
+<script>
+fdRequireUser();
+
+function renderEngine(){
+  const models=fd5Models(),active=fd5ActiveModel();
+  document.getElementById("model-grid").innerHTML=models.map(m=>'<article class="pack5-model-card '+(m.id===active.id?'active':'')+'" data-id="'+m.id+'"><span class="eyebrow">'+m.version+'</span><h3>'+m.name+'</h3><p>'+m.description+'</p></article>').join("");
+  document.querySelectorAll("[data-id]").forEach(c=>c.onclick=()=>{localStorage.setItem(FD5_ACTIVE_MODEL_KEY,c.dataset.id);renderEngine();});
+  document.getElementById("model-name").textContent=active.name+" fingerprint";
+  document.getElementById("model-description").textContent=active.description;
+  document.getElementById("ridge-list").innerHTML=active.ridges.map(r=>'<div class="pack5-ridge"><div class="pack5-ridge-head"><strong>'+r.name+'</strong><strong>'+r.score+'</strong></div><div class="track"><span style="width:'+r.score+'%"></span></div><div class="pack5-ridge-meta"><span>Weight '+Math.round(r.weight*100)+'%</span><span>'+r.evidence+' evidence items</span></div></div>').join("");
+  const score=fd5Score(active);document.getElementById("score-ring").textContent=score+"%";document.getElementById("score-label").textContent=active.name;
+}
+renderEngine();
+
+</script>
+</body>
+</html>

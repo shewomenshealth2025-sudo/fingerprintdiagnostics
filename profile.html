@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Profile | Fingerprint Diagnostics</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="pack2.css" />
+<link rel="stylesheet" href="pack4.css">
+<link rel="stylesheet" href="pack5.css">
+</head>
+<body class="pack2-dashboard">
+  <aside class="pack2-sidebar">
+  <a class="brand" href="index.html"><span class="brand-mark">FD</span><span>Fingerprint<br>Diagnostics</span></a>
+  <nav class="pack2-side-nav">
+    <a href="dashboard.html">Overview</a>
+    <a href="patient-portal.html">Patient portal</a>
+    <a href="clinician-portal.html">Clinician portal</a>
+    <a href="fingerprint-engine.html">Fingerprint engine</a>
+    <a href="disease-library.html">Disease library</a>
+    <a href="biomarker-library.html">Biomarkers</a>
+    <a href="profile.html">Profile</a>
+    <a href="settings.html">Settings</a>
+    <a href="notifications.html">Notifications</a>
+    <a href="index.html">Website</a>
+  </nav>
+  <button class="pack2-logout" data-logout>Sign out</button>
+</aside>
+
+  <main class="pack2-main">
+    <header class="pack2-header">
+      <div><span class="eyebrow">Account</span><h1>Your profile.</h1><p>Manage the identity used in your prototype workspace.</p></div>
+    </header>
+
+    <section class="pack2-panel">
+      <form id="profile-form" class="pack2-form">
+        <div class="pack2-grid-2">
+          <label>Full name<input id="name" type="text" required /></label>
+          <label>Email address<input id="email" type="email" required /></label>
+        </div>
+        <div class="pack2-grid-2">
+          <label>
+            Role
+            <select id="role">
+              <option>Clinician</option>
+              <option>Researcher</option>
+              <option>Patient advocate</option>
+              <option>Technology partner</option>
+              <option>Research user</option>
+            </select>
+          </label>
+          <label>Organisation<input id="organisation" type="text" /></label>
+        </div>
+        <div id="success" class="pack2-success" hidden><strong>Profile updated</strong><p>Your changes have been saved in this browser.</p></div>
+        <button class="button primary" type="submit">Save changes</button>
+      </form>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+  <script src="pack2.js"></script>
+  <script>
+    const user = fdRequireUser();
+    if (user) {
+      document.getElementById("name").value = user.name || "";
+      document.getElementById("email").value = user.email || "";
+      document.getElementById("role").value = user.role || "Research user";
+      document.getElementById("organisation").value = user.organisation || "";
+    }
+
+    document.getElementById("profile-form").addEventListener("submit", (event) => {
+      event.preventDefault();
+      fdSaveUser({
+        ...user,
+        name: document.getElementById("name").value.trim(),
+        email: document.getElementById("email").value.trim(),
+        role: document.getElementById("role").value,
+        organisation: document.getElementById("organisation").value.trim()
+      });
+      document.getElementById("success").hidden = false;
+      fdUpdateUserUI();
+    });
+  </script>
+<script src="pack4.js"></script>
+<script src="pack5.js"></script>
+</body>
+</html>

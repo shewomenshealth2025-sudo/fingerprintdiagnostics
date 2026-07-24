@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Create account | Fingerprint Diagnostics</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="pack2.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="container nav-wrap">
+      <a class="brand" href="index.html"><span class="brand-mark">FD</span><span>Fingerprint Diagnostics</span></a>
+      <nav class="nav-links"><a href="index.html">Home</a><a href="login.html">Sign in</a></nav>
+    </div>
+  </header>
+
+  <main class="pack2-auth">
+    <section class="pack2-card">
+      <span class="eyebrow">Join the prototype</span>
+      <h1>Create your account.</h1>
+      <p>Choose how you plan to use the platform. This determines the prototype workspace you see.</p>
+
+      <form id="register-form" class="pack2-form">
+        <div class="pack2-grid-2">
+          <label>Full name<input id="name" type="text" placeholder="Your full name" required /></label>
+          <label>Email address<input id="email" type="email" placeholder="you@example.com" required /></label>
+        </div>
+
+        <label>
+          Account type
+          <select id="role" required>
+            <option value="">Select your role</option>
+            <option>Clinician</option>
+            <option>Researcher</option>
+            <option>Patient advocate</option>
+            <option>Technology partner</option>
+          </select>
+        </label>
+
+        <label>Organisation<input id="organisation" type="text" placeholder="Hospital, university, company or independent" /></label>
+
+        <div class="pack2-grid-2">
+          <label>Password<input id="password" type="password" minlength="6" placeholder="At least 6 characters" required /></label>
+          <label>Confirm password<input id="confirm-password" type="password" minlength="6" placeholder="Repeat password" required /></label>
+        </div>
+
+        <label class="pack2-check">
+          <input id="terms" type="checkbox" required />
+          <span>I understand this is a research prototype and not a clinical diagnostic service.</span>
+        </label>
+
+        <div id="form-message" class="pack2-message" hidden></div>
+        <button class="button primary full" type="submit">Create account</button>
+      </form>
+
+      <p>Already registered? <a class="pack2-link" href="login.html">Sign in</a></p>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+  <script src="pack2.js"></script>
+  <script>
+    document.getElementById("register-form").addEventListener("submit", (event) => {
+      event.preventDefault();
+      const password = document.getElementById("password").value;
+      const confirmPassword = document.getElementById("confirm-password").value;
+      const message = document.getElementById("form-message");
+
+      if (password !== confirmPassword) {
+        message.hidden = false;
+        message.textContent = "The passwords do not match.";
+        return;
+      }
+
+      fdSaveUser({
+        name: document.getElementById("name").value.trim(),
+        email: document.getElementById("email").value.trim(),
+        role: document.getElementById("role").value,
+        organisation: document.getElementById("organisation").value.trim() || "Independent"
+      });
+
+      window.location.href = "dashboard.html";
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contact | Fingerprint Diagnostics</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="container nav-wrap">
+      <a class="brand" href="index.html"><span class="brand-mark">FD</span><span>Fingerprint Diagnostics</span></a>
+      <button class="menu-toggle" aria-label="Open menu">☰</button>
+      <nav class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="about.html">About</a>
+        <a class="active" href="contact.html">Contact</a>
+        <a class="nav-button" href="login.html">Sign in</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="section page-hero">
+      <div class="container contact-grid">
+        <div>
+          <span class="eyebrow">Contact</span>
+          <h1>Help shape the future of Fingerprint Diagnostics.</h1>
+          <p class="lead">
+            We are interested in hearing from clinicians, researchers, engineers, patient advocates
+            and potential collaborators.
+          </p>
+        </div>
+
+        <form class="form-card" action="https://formsubmit.co/YOUR-EMAIL-HERE" method="POST">
+          <input type="hidden" name="_subject" value="New Fingerprint Diagnostics enquiry" />
+          <label>Name<input type="text" name="name" placeholder="Your name" required /></label>
+          <label>Email<input type="email" name="email" placeholder="you@example.com" required /></label>
+          <label>
+            Area of interest
+            <select name="interest" required>
+              <option value="">Select one</option>
+              <option>Clinical collaboration</option>
+              <option>Scientific research</option>
+              <option>Technology and AI</option>
+              <option>Investment or partnership</option>
+              <option>Other</option>
+            </select>
+          </label>
+          <label>Message<textarea name="message" rows="6" placeholder="Tell us how you would like to get involved." required></textarea></label>
+          <button class="button primary" type="submit">Send enquiry</button>
+          <small>Replace YOUR-EMAIL-HERE in this file before publishing the form.</small>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container footer-wrap">
+      <div><strong>Fingerprint Diagnostics</strong><p>Reading disease through patterns, not isolated signals.</p></div>
+      <span>© 2026 Fingerprint Diagnostics</span>
+    </div>
+  </footer>
+  <script src="script.js"></script>
+</body>
+</html>

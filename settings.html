@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Settings | Fingerprint Diagnostics</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="pack2.css" />
+<link rel="stylesheet" href="pack4.css">
+<link rel="stylesheet" href="pack5.css">
+</head>
+<body class="pack2-dashboard">
+  <aside class="pack2-sidebar">
+  <a class="brand" href="index.html"><span class="brand-mark">FD</span><span>Fingerprint<br>Diagnostics</span></a>
+  <nav class="pack2-side-nav">
+    <a href="dashboard.html">Overview</a>
+    <a href="patient-portal.html">Patient portal</a>
+    <a href="clinician-portal.html">Clinician portal</a>
+    <a href="fingerprint-engine.html">Fingerprint engine</a>
+    <a href="disease-library.html">Disease library</a>
+    <a href="biomarker-library.html">Biomarkers</a>
+    <a href="profile.html">Profile</a>
+    <a href="settings.html">Settings</a>
+    <a href="notifications.html">Notifications</a>
+    <a href="index.html">Website</a>
+  </nav>
+  <button class="pack2-logout" data-logout>Sign out</button>
+</aside>
+
+  <main class="pack2-main">
+    <header class="pack2-header">
+      <div><span class="eyebrow">Preferences</span><h1>Workspace settings.</h1><p>Control your prototype alerts and interface preferences.</p></div>
+    </header>
+
+    <section class="pack2-panel">
+      <div class="pack2-settings-group">
+        <div class="pack2-setting">
+          <div><strong>Email updates</strong><p>Receive important product and account messages.</p></div>
+          <label class="pack2-toggle"><input id="emailUpdates" type="checkbox" /><span class="pack2-slider"></span></label>
+        </div>
+        <div class="pack2-setting">
+          <div><strong>Research alerts</strong><p>Be notified when new fingerprint evidence is added.</p></div>
+          <label class="pack2-toggle"><input id="researchAlerts" type="checkbox" /><span class="pack2-slider"></span></label>
+        </div>
+        <div class="pack2-setting">
+          <div><strong>Product updates</strong><p>Receive news about new platform features.</p></div>
+          <label class="pack2-toggle"><input id="productUpdates" type="checkbox" /><span class="pack2-slider"></span></label>
+        </div>
+        <div class="pack2-setting">
+          <div><strong>Compact dashboard</strong><p>Reduce spacing in dashboard views.</p></div>
+          <label class="pack2-toggle"><input id="compactView" type="checkbox" /><span class="pack2-slider"></span></label>
+        </div>
+      </div>
+
+      <div id="saved" class="pack2-success" hidden><strong>Settings saved</strong><p>Your preferences are stored in this browser.</p></div>
+      <button id="save-settings" class="button primary">Save settings</button>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+  <script src="pack2.js"></script>
+  <script>
+    fdRequireUser();
+    const preferences = fdGetPreferences();
+
+    Object.entries(preferences).forEach(([key, value]) => {
+      const input = document.getElementById(key);
+      if (input) input.checked = Boolean(value);
+    });
+
+    document.getElementById("save-settings").addEventListener("click", () => {
+      fdSavePreferences({
+        emailUpdates: document.getElementById("emailUpdates").checked,
+        researchAlerts: document.getElementById("researchAlerts").checked,
+        productUpdates: document.getElementById("productUpdates").checked,
+        compactView: document.getElementById("compactView").checked
+      });
+      document.getElementById("saved").hidden = false;
+    });
+  </script>
+<script src="pack4.js"></script>
+<script src="pack5.js"></script>
+</body>
+</html>
